@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.commands.BackGroundCommand;
 import frc.robot.commands.ElevatorCommand;
+import frc.robot.commands.ElevatorCommand.levelHeight;
 import frc.robot.constants.PIDConstants;
 import frc.robot.constants.PhysicsConstants;
 import frc.robot.constants.PortConstants;
@@ -19,6 +20,7 @@ public class Robot extends TimedRobot {
 
 //    Command instances
     public BackGroundCommand backGroundCommand = new BackGroundCommand();
+    public ElevatorCommand elevatorCommand = new ElevatorCommand(levelHeight.LEVEL_1);
 
 //    Constants objects
     public static TimeConstants timeConstants = new TimeConstants();
@@ -62,6 +64,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        elevatorCommand.start();
     }
 
     @Override

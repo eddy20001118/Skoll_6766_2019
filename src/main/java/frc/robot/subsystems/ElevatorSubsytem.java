@@ -28,24 +28,20 @@ public class ElevatorSubsytem extends Subsystem {
 
 //        Main talon controller programmed with mag encoder
         elevator_main.configFactoryDefault();
-        elevator_main.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+        elevator_main.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Robot.timeConstants.kTimeOutMs);
         elevator_main.setSensorPhase(true);
         elevator_main.setNeutralMode(NeutralMode.Brake);
         elevator_main.configMotionAcceleration(Robot.physicsConstants.elevatorAccel, Robot.timeConstants.kTimeOutMs);
         elevator_main.configMotionCruiseVelocity(Robot.physicsConstants.elevatorCruiseV, Robot.timeConstants.kTimeOutMs);
         elevator_main.configMotionSCurveStrength(Robot.physicsConstants.elevatorSCurveStrength, Robot.timeConstants.kTimeOutMs);
-        elevator_main.configNominalOutputForward(Robot.physicsConstants.elevatorNominalSpeed, Robot.timeConstants.kTimeOutMs);
-        elevator_main.configNominalOutputReverse(Robot.physicsConstants.elevatorNominalSpeed, Robot.timeConstants.kTimeOutMs);
-        elevator_main.configPeakOutputForward(Robot.physicsConstants.elevatorPeakOutput, Robot.timeConstants.kTimeOutMs);
-        elevator_main.configPeakOutputReverse(-Robot.physicsConstants.elevatorPeakOutput, Robot.timeConstants.kTimeOutMs);
 
 //        Config soft limit
         elevator_main.configForwardSoftLimitEnable(Robot.physicsConstants.elevatorForwardSoftLimit, Robot.timeConstants.kTimeOutMs);
         elevator_main.configReverseSoftLimitEnable(Robot.physicsConstants.elevatorReverseSoftLimit, Robot.timeConstants.kTimeOutMs);
 
-//        Config close-loop ramp rate
+//        Config ramp rate
         elevator_main.configClosedloopRamp(Robot.physicsConstants.elevatorRampRate, Robot.timeConstants.kTimeOutMs);
-
+        elevator_main.configOpenloopRamp(Robot.physicsConstants.elevatorRampRate, Robot.timeConstants.kTimeOutMs);
 //        Config PID value
         elevator_main.config_kP(0, Robot.elevatorPID.kP, Robot.timeConstants.kTimeOutMs);
         elevator_main.config_kI(0, Robot.elevatorPID.kI, Robot.timeConstants.kTimeOutMs);

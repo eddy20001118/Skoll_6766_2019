@@ -28,6 +28,16 @@ public class OI {
             buttonStart1 = new JoystickButton(xboxLeft, 8);
 
     public OI(){
-        buttonA1.whenPressed(new ElevatorCommand(levelHeight.LEVEL_1));
+        // buttonA1.whenPressed(new ElevatorCommand(levelHeight.LEVEL_1));
+        // buttonB1.whenPressed(new ElevatorCommand(levelHeight.LEVEL_2));
+        // buttonX1.whenPressed(new ElevatorCommand(levelHeight.LEVEL_3));
+    }
+
+    public double getLeftAxis(int port){
+        return xboxLeft.getRawAxis(port);
+    }
+
+    public boolean getLeftButton(int port){
+        return xboxLeft.getRawButton(port);
     }
 }

@@ -33,15 +33,16 @@ public class ElevatorCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (currentLevel == levelHeight.LEVEL_1){
-            this.rotation = Robot.physicsConstants.elevatorLevelOneR;
-        } else if (currentLevel == levelHeight.LEVEL_2) {
-            this.rotation = Robot.physicsConstants.elevatorLevelTwoR;
-        } else if (currentLevel == levelHeight.LEVEL_3) {
-            this.rotation = Robot.physicsConstants.elevatorLevelThreeR;
-        }
+        Robot.elevatorSubsytem.setSpeed(Robot.m_oi.getLeftAxis(1));
+        // if (currentLevel == levelHeight.LEVEL_1){
+        //     this.rotation = Robot.physicsConstants.elevatorLevelOneR;
+        // } else if (currentLevel == levelHeight.LEVEL_2) {
+        //     this.rotation = Robot.physicsConstants.elevatorLevelTwoR;
+        // } else if (currentLevel == levelHeight.LEVEL_3) {
+        //     this.rotation = Robot.physicsConstants.elevatorLevelThreeR;
+        // }
 
-        Robot.elevatorSubsytem.setRotation(rotation);
+        // Robot.elevatorSubsytem.setRotation(rotation);
     }
 
     // Make this return true when this Command no longer needs to run execute()
