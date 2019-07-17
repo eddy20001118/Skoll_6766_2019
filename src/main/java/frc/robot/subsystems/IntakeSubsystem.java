@@ -46,7 +46,7 @@ public class IntakeSubsystem extends Subsystem {
         intakeMotor.configForwardSoftLimitThreshold(Robot.physicsConstants.intakeForwardSensorLimit, Robot.timeConstants.kTimeOutMs);
         intakeMotor.configReverseSoftLimitEnable(true);
         intakeMotor.configReverseSoftLimitThreshold(Robot.physicsConstants.intakeReverseSensorLimit, Robot.timeConstants.kTimeOutMs);
-
+// 1
         intakeMotor.configAllowableClosedloopError(Robot.portConstants.pIntakeSpin, Robot.physicsConstants.intakeAllowableCloseLoopError, Robot.timeConstants.kTimeOutMs);
         intakeMotor.configMotionCruiseVelocity(Robot.physicsConstants.intakeCruiseV, Robot.timeConstants.kTimeOutMs);
         intakeMotor.configMotionSCurveStrength(Robot.physicsConstants.intakeSCurveStrength, Robot.timeConstants.kTimeOutMs);
