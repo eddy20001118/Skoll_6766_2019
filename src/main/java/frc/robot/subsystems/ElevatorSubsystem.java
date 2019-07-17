@@ -8,13 +8,13 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
 
-public class ElevatorSubsytem extends Subsystem {
+public class ElevatorSubsystem extends Subsystem {
 
     // Initialise motor controller
     private WPI_TalonSRX elevator_main;
     private WPI_VictorSPX elevator_slave;
 
-    public ElevatorSubsytem() {
+    public ElevatorSubsystem() {
         config();
     }
 
