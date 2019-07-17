@@ -18,6 +18,8 @@ import frc.robot.commands.ElevatorCommand;
  */
 public class OI {
     public Joystick xboxLeft = new Joystick(0);
+    public Joystick xboxRight = new Joystick(1);
+
     public Button buttonA1 = new JoystickButton(xboxLeft, 1),
             buttonB1 = new JoystickButton(xboxLeft, 2),
             buttonX1 = new JoystickButton(xboxLeft, 3),
@@ -26,6 +28,15 @@ public class OI {
             buttonRight1 = new JoystickButton(xboxLeft, 6),
             buttonBack1 = new JoystickButton(xboxLeft, 7),
             buttonStart1 = new JoystickButton(xboxLeft, 8);
+
+    public  Button buttonA2 = new JoystickButton(xboxRight,1),
+            buttonB2 = new JoystickButton(xboxRight, 2),
+            buttonX2 = new JoystickButton(xboxRight, 3),
+            buttonY2 = new JoystickButton(xboxRight, 4),
+            buttonLeft2 = new JoystickButton(xboxRight, 5),
+            buttonRight2 = new JoystickButton(xboxRight, 6),
+            buttonBack2 = new JoystickButton(xboxRight, 7),
+            buttonStart2 = new JoystickButton(xboxRight, 8);
 
     public OI(){
         // buttonA1.whenPressed(new ElevatorCommand(levelHeight.LEVEL_1));
