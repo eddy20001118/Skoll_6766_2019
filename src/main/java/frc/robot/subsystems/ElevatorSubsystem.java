@@ -42,6 +42,7 @@ public class ElevatorSubsytem extends Subsystem {
 //        Config ramp rate
         elevator_main.configClosedloopRamp(Robot.physicsConstants.elevatorRampRate, Robot.timeConstants.kTimeOutMs);
         elevator_main.configOpenloopRamp(Robot.physicsConstants.elevatorRampRate, Robot.timeConstants.kTimeOutMs);
+
 //        Config PID value
         elevator_main.config_kP(0, Robot.elevatorPID.kP, Robot.timeConstants.kTimeOutMs);
         elevator_main.config_kI(0, Robot.elevatorPID.kI, Robot.timeConstants.kTimeOutMs);
