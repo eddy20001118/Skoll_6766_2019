@@ -11,6 +11,7 @@ import frc.robot.constants.PortConstants;
 import frc.robot.constants.TimeConstants;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
 
 public class Robot extends TimedRobot {
@@ -29,6 +30,7 @@ public class Robot extends TimedRobot {
 
     //    Subsystem instances
     public static ElevatorSubsystem elevatorSubsytem = new ElevatorSubsystem();
+    public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
 
     @Override

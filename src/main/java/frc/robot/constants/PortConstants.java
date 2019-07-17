@@ -18,6 +18,9 @@ public class PortConstants implements Constants {
     public int pIFRLeft = 0;
     public int pIFRRight = 1;
 
+//    Solenoid Node ID
+    public int pHatchPanel = 1;
+
     @Override
     public void refresh() {
 //        CAN port
@@ -34,6 +37,9 @@ public class PortConstants implements Constants {
 //        DigitalInput port
         this.pIFRLeft = (int) SmartDashboard.getNumber("/Port/pIFRLeft", this.pIFRLeft);
         this.pIFRRight = (int) SmartDashboard.getNumber("/Port/pIFRRight", this.pIFRRight);
+
+//        Solenoid Node ID
+        this.pHatchPanel = (int) SmartDashboard.getNumber("/Port/pHatchPanel", this.pHatchPanel);
     }
 
     @Override
@@ -52,6 +58,9 @@ public class PortConstants implements Constants {
 //        DigitalInput Port
         SmartDashboard.putNumber("/Port/pIFRLeft", pIFRLeft);
         SmartDashboard.putNumber("/Port/pIFRRight", pIFRRight);
+
+//      Solenoid Node ID
+        SmartDashboard.putNumber("/Port/pHatchPanel", pHatchPanel);
     }
 
     @Override

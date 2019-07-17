@@ -10,36 +10,18 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class ElevatorCommand extends Command {
-    public double rotation = 0;
-    public levelHeight currentLevel;
+public class ElevatorRawCommand extends Command {
+    public ElevatorRawCommand() {
 
-    public static enum levelHeight {
-        LEVEL_1,
-        LEVEL_2,
-        LEVEL_3
-    }
-
-    public ElevatorCommand(levelHeight level) {
-        this.currentLevel = level;
     }
 
     @Override
     protected void initialize() {
-        Robot.elevatorSubsytem.config();
     }
 
     @Override
     protected void execute() {
-         if (currentLevel == levelHeight.LEVEL_1){
-             this.rotation = Robot.physicsConstants.elevatorLevelOneR;
-         } else if (currentLevel == levelHeight.LEVEL_2) {
-             this.rotation = Robot.physicsConstants.elevatorLevelTwoR;
-         } else if (currentLevel == levelHeight.LEVEL_3) {
-             this.rotation = Robot.physicsConstants.elevatorLevelThreeR;
-         }
-
-         Robot.elevatorSubsytem.setRotation(rotation);
+        Robot.elevatorSubsytem.setSpeed(Robot.m_oi.getLeftAxis(1));
     }
 
     @Override

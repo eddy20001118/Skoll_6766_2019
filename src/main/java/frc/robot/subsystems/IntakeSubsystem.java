@@ -7,33 +7,32 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.Robot;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.Robot;
 
-/**
- * An example subsystem.  You can replace me with your own Subsystem.
- */
+
 public class IntakeSubsystem extends Subsystem {
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
-    private WPI_VictorSPX intakeMacin; //victor1 openloop Mac
-    private WPI_VictorSPX intakeAttrition;// victor2 openloop attrition
-    private WPI_TalonSRX intakeMotor;// talon1 closeloop
+
+    private WPI_VictorSPX intakeMacin; // Victor1 Open-loop Macin
+    private WPI_VictorSPX intakeAttrition;// Victor2 Open-loop Attrition
+    private WPI_TalonSRX intakeMotor;// Talon1 Closed-loop
+    private Solenoid hatchSolenoid;
 
     public IntakeSubsystem() {
         intake_config();
     }
 
     public void intake_config() {
-        intakeAttrition = new WPI_VictorSPX(Robot.portConstants.pIntakeSpin); //attrition pip control
-        intakeMacin = new WPI_VictorSPX(Robot.portConstants.pIntakeUp);//intake_macin control up
-        intakeMotor = new WPI_TalonSRX(Robot.portConstants.pIntakeDown);//intakeMotor contorl down
+        intakeAttrition = new WPI_VictorSPX(Robot.portConstants.pIntakeSpin);
+        intakeMacin = new WPI_VictorSPX(Robot.portConstants.pIntakeUp);
+        intakeMotor = new WPI_TalonSRX(Robot.portConstants.pIntakeDown);
+        hatchSolenoid = new Solenoid(Robot.portConstants.pHatchPanel);
 
 //      Main talon controller programmed with mag encoder
         intakeMotor.configFactoryDefault();
@@ -66,15 +65,23 @@ public class IntakeSubsystem extends Subsystem {
         intakeMacin.setInverted(Robot.physicsConstants.macinInvert);
         intakeAttrition.setInverted(!Robot.physicsConstants.macinInvert);
 
-        // Test
     }
 
-    public void setRotation(double targetRotation) {
+    public void setIntakeRotation(double targetRotation) {
         intakeMotor.set(ControlMode.MotionMagic, targetRotation * 4096);
     }
 
-    public void setSpeed(double targetSpeed) {
+    public void setIntakeSpeed(double targetSpeed) {
         intakeMotor.set(ControlMode.PercentOutput, targetSpeed);
+    }
+
+    public void setIntakeUDSpeed(double targetSpeedUp, double targerSpeedDown) {
+        intakeMacin.set(ControlMode.PercentOutput, targetSpeedUp);
+        intakeAttrition.set(ControlMode.PercentOutput, targerSpeedDown);
+    }
+
+    public void setHatchSolenoid(boolean forward){
+        hatchSolenoid.set(forward);
     }
 
     public void resetEncoder() {

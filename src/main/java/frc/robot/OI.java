@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.ElevatorCommand.levelHeight;
 import frc.robot.commands.ElevatorCommand;
+
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -29,7 +30,7 @@ public class OI {
             buttonBack1 = new JoystickButton(xboxLeft, 7),
             buttonStart1 = new JoystickButton(xboxLeft, 8);
 
-    public  Button buttonA2 = new JoystickButton(xboxRight,1),
+    public Button buttonA2 = new JoystickButton(xboxRight, 1),
             buttonB2 = new JoystickButton(xboxRight, 2),
             buttonX2 = new JoystickButton(xboxRight, 3),
             buttonY2 = new JoystickButton(xboxRight, 4),
@@ -38,17 +39,17 @@ public class OI {
             buttonBack2 = new JoystickButton(xboxRight, 7),
             buttonStart2 = new JoystickButton(xboxRight, 8);
 
-    public OI(){
+    public OI() {
         // buttonA1.whenPressed(new ElevatorCommand(levelHeight.LEVEL_1));
         // buttonB1.whenPressed(new ElevatorCommand(levelHeight.LEVEL_2));
         // buttonX1.whenPressed(new ElevatorCommand(levelHeight.LEVEL_3));
     }
 
-    public double getLeftAxis(int port){
+    public double getLeftAxis(int port) {
         return xboxLeft.getRawAxis(port);
     }
 
-    public boolean getLeftButton(int port){
+    public boolean getLeftButton(int port) {
         return xboxLeft.getRawButton(port);
     }
 }
