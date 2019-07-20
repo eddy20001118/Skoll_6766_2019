@@ -5,12 +5,13 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.commands.BackGroundCommand;
 import frc.robot.commands.ElevatorCommand;
 import frc.robot.commands.ElevatorCommand.levelHeight;
+import frc.robot.commands.ElevatorRawCommand;
 import frc.robot.constants.PIDConstants;
 import frc.robot.constants.PhysicsConstants;
 import frc.robot.constants.PortConstants;
 import frc.robot.constants.TimeConstants;
+import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
 
@@ -27,11 +28,14 @@ public class Robot extends TimedRobot {
     public static PortConstants portConstants = new PortConstants();
     public static PIDConstants elevatorPID = new PIDConstants("Elevator", 0.5, 0, 0);
     public static PIDConstants intakePID = new PIDConstants("Intake", 0.5, 0, 0);
+    public static PIDConstants dtLeftPID = new PIDConstants("dtLeft", 0.5, 0, 0);
+    public static PIDConstants dtRightPID = new PIDConstants("dtRight", 0.5, 0, 0);
 
     //    Subsystem instances
     public static ElevatorSubsystem elevatorSubsytem = new ElevatorSubsystem();
+    public static ElevatorRawCommand elevatorRawCommand = new ElevatorRawCommand();
     public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-    public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
+    public static DrivetrainSubsystem drivetrainSubsystem = new DrivetrainSubsystem();
 
     @Override
     public void robotInit() {
@@ -65,7 +69,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        elevatorCommand.start();
+        elevatorRawCommand.start();
     }
 
     @Override

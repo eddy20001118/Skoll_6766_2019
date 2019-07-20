@@ -17,6 +17,7 @@ public class ElevatorRawCommand extends Command {
 
     @Override
     protected void initialize() {
+        Robot.elevatorSubsytem.config();
     }
 
     @Override

@@ -9,7 +9,7 @@ public class PhysicsConstants implements Constants {
     public double elevatorLevelOneR = 3;
     public double elevatorLevelTwoR = 7;
     public double elevatorLevelThreeR = 10;
-    public double elevatorRampRate = 0.8;
+    public double elevatorRampRate = 0.2;
     public int elevatorForwardSensorLimit = 10;
     public int elevatorReverseSensorLimit = -10;
     public boolean elevatorForwardSoftLimit = false;
@@ -25,6 +25,8 @@ public class PhysicsConstants implements Constants {
     public boolean intakeReverseSoftLimit = false;
 
     public boolean macinInvert = false;
+
+    public double dtRampRate = 0.2;
 
     @Override
     public void refresh() {
@@ -50,6 +52,8 @@ public class PhysicsConstants implements Constants {
         this.intakeReverseSoftLimit = (boolean) SmartDashboard.getBoolean("/Physics/intakeReverseSoftLimit", intakeReverseSoftLimit);
 
         this.macinInvert = (boolean) SmartDashboard.getBoolean("/Physics/macinInvert", macinInvert);
+
+        this.dtRampRate = (double) SmartDashboard.getNumber("/Physics/dtRampRate", dtRampRate);
     }
 
 
@@ -75,6 +79,8 @@ public class PhysicsConstants implements Constants {
         SmartDashboard.putBoolean("/Physics/intakeReverseSoftLimit", intakeReverseSoftLimit);
 
         SmartDashboard.putBoolean("/Physics/macinInvert", macinInvert);
+
+        SmartDashboard.putNumber("/Physics/dtRampRate", dtRampRate);
 
     }
 

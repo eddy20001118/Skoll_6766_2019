@@ -32,7 +32,7 @@ public class IntakeSubsystem extends Subsystem {
         intakeAttrition = new WPI_VictorSPX(Robot.portConstants.pIntakeSpin);
         intakeMacin = new WPI_VictorSPX(Robot.portConstants.pIntakeUp);
         intakeMotor = new WPI_TalonSRX(Robot.portConstants.pIntakeDown);
-        hatchSolenoid = new Solenoid(Robot.portConstants.pHatchPanel);
+//        hatchSolenoid = new Solenoid(Robot.portConstants.pHatchPanel);
 
 //      Main talon controller programmed with mag encoder
         intakeMotor.configFactoryDefault();
@@ -45,7 +45,7 @@ public class IntakeSubsystem extends Subsystem {
         intakeMotor.configForwardSoftLimitThreshold(Robot.physicsConstants.intakeForwardSensorLimit, Robot.timeConstants.kTimeOutMs);
         intakeMotor.configReverseSoftLimitEnable(true);
         intakeMotor.configReverseSoftLimitThreshold(Robot.physicsConstants.intakeReverseSensorLimit, Robot.timeConstants.kTimeOutMs);
-// 1
+
         intakeMotor.configAllowableClosedloopError(Robot.portConstants.pIntakeSpin, Robot.physicsConstants.intakeAllowableCloseLoopError, Robot.timeConstants.kTimeOutMs);
         intakeMotor.configMotionCruiseVelocity(Robot.physicsConstants.intakeCruiseV, Robot.timeConstants.kTimeOutMs);
         intakeMotor.configMotionSCurveStrength(Robot.physicsConstants.intakeSCurveStrength, Robot.timeConstants.kTimeOutMs);
@@ -80,7 +80,7 @@ public class IntakeSubsystem extends Subsystem {
         intakeAttrition.set(ControlMode.PercentOutput, targerSpeedDown);
     }
 
-    public void setHatchSolenoid(boolean forward){
+    public void setHatchSolenoid(boolean forward) {
         hatchSolenoid.set(forward);
     }
 
@@ -99,7 +99,5 @@ public class IntakeSubsystem extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        // setDefaultCommand(new MySpecialCommand());
     }
 }
