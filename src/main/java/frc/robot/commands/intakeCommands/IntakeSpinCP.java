@@ -1,6 +1,7 @@
-package frc.robot.commands;
+package frc.robot.commands.intakeCommands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class IntakeSpinCP extends Command {
@@ -9,6 +10,7 @@ public class IntakeSpinCP extends Command {
 
     public IntakeSpinCP(double targetPosition) {
         this.targetPosition = targetPosition;
+
     }
 
     @Override
@@ -18,17 +20,19 @@ public class IntakeSpinCP extends Command {
 
     @Override
     protected void execute() {
-        currentPosition = Robot.intakeSubsystem.getPosition();
-        if (currentPosition < targetPosition - 2000) {
+        currentPosition = Robot.intakeSubsystem.getPosition() / 1000;
+        if (currentPosition < targetPosition - 2) {
             Robot.intakeSubsystem.setIntakeSpeed(0.3);
-        } else if (currentPosition > targetPosition + 2000) {
+        } else if (currentPosition > targetPosition + 2) {
             Robot.intakeSubsystem.setIntakeSpeed(-0.3);
+        } else {
+            Robot.intakeSubsystem.setIntakeSpeed(0);
         }
     }
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return Math.abs(currentPosition - Robot.intakeSubsystem.getPosition()) <= 4;
     }
 
     @Override

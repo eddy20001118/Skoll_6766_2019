@@ -12,7 +12,6 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
@@ -23,7 +22,7 @@ public class IntakeSubsystem extends Subsystem {
     private WPI_TalonSRX intakeMacin;
     private WPI_VictorSPX intakeAttrition;
     private WPI_TalonSRX intakeMotor;
-    private Solenoid hatchSolenoid;
+//    private Solenoid hatchSolenoid;
 
     public IntakeSubsystem() {
         intake_config();
@@ -33,13 +32,14 @@ public class IntakeSubsystem extends Subsystem {
         intakeAttrition = new WPI_VictorSPX(Robot.portConstants.pIntakeDown);
         intakeMacin = new WPI_TalonSRX(Robot.portConstants.pIntakeUp);
         intakeMotor = new WPI_TalonSRX(Robot.portConstants.pIntakeSpin);
-        hatchSolenoid = new Solenoid(Robot.portConstants.pHatchPanel);
+//        hatchSolenoid = new Solenoid(Robot.portConstants.pHatchPanel);
 
 //      Main talon controller programmed with mag encoder
         intakeMotor.configFactoryDefault();
-        intakeMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Robot.timeConstants.kTimeOutMs);
+        intakeMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, Robot.timeConstants.kTimeOutMs);
         intakeMotor.setSensorPhase(false);
         intakeMotor.setNeutralMode(NeutralMode.Brake);
+        intakeMotor.configNeutralDeadband(0.1);
 
 //      Config ramp rate
         intakeMotor.configClosedloopRamp(Robot.physicsConstants.intakeRampRate, Robot.timeConstants.kTimeOutMs);
@@ -69,7 +69,8 @@ public class IntakeSubsystem extends Subsystem {
     }
 
     public void setHatchSolenoid(boolean forward) {
-        hatchSolenoid.set(forward);
+        SmartDashboard.putBoolean("HatchPanel", forward);
+//        hatchSolenoid.set(forward);
     }
 
     public void resetEncoder() {

@@ -5,43 +5,43 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.buttonCommands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-public class IntakeBallReleaseCommand extends Command {
-    double upSpeed = 0;
-    double downSpeed = 0;
+public class ELDownCountCommand extends Command {
 
+    public int up = 0;
+    public int oldLevelValue;
 
-    public IntakeBallReleaseCommand(double upSpeed, double downSpeed) {
-        this.downSpeed = downSpeed;
-        this.upSpeed = upSpeed;
+    public ELDownCountCommand() {
+
     }
 
     @Override
     protected void initialize() {
-        Robot.intakeSubsystem.intake_config();
+        this.oldLevelValue = Robot.m_oi.elevatorLevel;
     }
 
     @Override
     protected void execute() {
-        Robot.intakeSubsystem.setIntakeUDSpeed(upSpeed, downSpeed);
+        if (Robot.m_oi.elevatorLevel < 3) {
+            Robot.m_oi.elevatorLevel++;
+        }
     }
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return Robot.m_oi.elevatorLevel - oldLevelValue == 1 || Robot.m_oi.elevatorLevel == 3;
     }
 
     @Override
     protected void end() {
-        Robot.intakeSubsystem.setIntakeUDSpeed(-0.05, -0.05);
     }
 
     @Override
     protected void interrupted() {
-        end();
     }
 }

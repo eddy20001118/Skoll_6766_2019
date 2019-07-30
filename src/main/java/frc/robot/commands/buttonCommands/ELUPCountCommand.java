@@ -5,45 +5,35 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.buttonCommands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-public class BackGroundCommand extends Command {
+public class ELUPCountCommand extends Command {
+    public int downCount = 0;
+    public int oldLevelValue;
 
-    public BackGroundCommand() {
-        SmartDashboard.putData(this);
+    public ELUPCountCommand() {
+
     }
 
     @Override
     protected void initialize() {
-        Robot.timeConstants.set();
-        Robot.physicsConstants.set();
-        Robot.portConstants.set();
-        Robot.elevatorPID.set();
-        Robot.intakePID.set();
+        this.oldLevelValue = Robot.m_oi.elevatorLevel;
     }
 
     @Override
     protected void execute() {
-        Robot.timeConstants.refresh();
-        Robot.physicsConstants.refresh();
-        Robot.portConstants.refresh();
-        Robot.elevatorPID.refresh();
-        Robot.intakePID.refresh();
-
-//        Robot.elevatorSubsytem.getSpeed();
-//        Robot.intakeSubsystem.getSpeed();
-//        Robot.elevatorSubsytem.getPosition();
-//        Robot.intakeSubsystem.getPosition();
-
+        if (Robot.m_oi.elevatorLevel > 0) {
+            Robot.m_oi.elevatorLevel--;
+        }
     }
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return Robot.m_oi.elevatorLevel - oldLevelValue == -1 || Robot.m_oi.elevatorLevel == 0;
     }
 
     @Override

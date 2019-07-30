@@ -1,13 +1,15 @@
-package frc.robot.commands;
+package frc.robot.commands.elevatorCommands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class ElevatorCP extends Command {
-    double targetPosition = 0;
-    double currentPosition;
+    private double targetPosition = 0;
+    private double currentPosition = 0;
 
     public ElevatorCP() {
+
     }
 
     @Override
@@ -17,21 +19,15 @@ public class ElevatorCP extends Command {
 
     @Override
     protected void execute() {
-        if (Robot.m_oi.getRightButton(5) && Robot.m_oi.elevatorPosition > 0) {
-            Robot.m_oi.elevatorPosition--;
-        }
+        SmartDashboard.putNumber("ElevatorLevel", Robot.m_oi.elevatorLevel);
 
-        if (Robot.m_oi.getRightButton(6) && Robot.m_oi.elevatorPosition < 3) {
-            Robot.m_oi.elevatorPosition++;
-        }
-
-        if (Robot.m_oi.elevatorPosition == 0){
+        if (Robot.m_oi.elevatorLevel == 0) {
             targetPosition = -33073;
-        } else if(Robot.m_oi.elevatorPosition == 1){
+        } else if (Robot.m_oi.elevatorLevel == 1) {
             targetPosition = -40000;
-        } else if (Robot.m_oi.elevatorPosition == 2){
+        } else if (Robot.m_oi.elevatorLevel == 2) {
             targetPosition = -50000;
-        } else if(Robot.m_oi.elevatorPosition == 3){
+        } else if (Robot.m_oi.elevatorLevel == 3) {
             targetPosition = -60000;
         } else {
             targetPosition = 0;

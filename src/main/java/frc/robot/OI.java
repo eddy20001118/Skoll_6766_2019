@@ -1,20 +1,17 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.HatchPanelCommand;
-import frc.robot.commands.IntakeBallCommand;
-import frc.robot.commands.IntakeBallReleaseCommand;
-import frc.robot.commands.IntakeSpinCP;
+import frc.robot.commands.buttonCommands.*;
+import frc.robot.commands.intakeCommands.*;
 
 public class OI {
-    public boolean finish = false;
     public Joystick xboxLeft = new Joystick(0);
     public Joystick xboxRight = new Joystick(1);
-    public int revertDT = 0;
-    public int elevatorPosition = 0;
+
+    public int elevatorLevel = 0; // elevatorLevel from 0 - 3
+    public boolean dtRevert = false; // drivetrain revert flag
 
     public Button buttonA1 = new JoystickButton(xboxLeft, 1),
             buttonB1 = new JoystickButton(xboxLeft, 2),
@@ -36,12 +33,17 @@ public class OI {
 
     public OI() {
         buttonA1.whileHeld(new IntakeBallReleaseCommand(-0.5, -0.5));
-        buttonB1.whileHeld(new IntakeBallCommand(0.5,0.5));
+        buttonB1.whileHeld(new IntakeBallCommand(0.5, 0.5));
+        buttonX1.toggleWhenPressed(new DriveTrainRevertCommand());
+        buttonLeft1.whenPressed(new ResetElevatorCommand());
+        buttonRight1.whenPressed(new ResetIntakeCommand());
 
-        buttonA2.toggleWhenPressed(new IntakeSpinCP(-5000));
-        buttonB2.toggleWhenPressed(new IntakeSpinCP(0));
-        buttonY2.toggleWhenPressed(new IntakeSpinCP(30000));
+        buttonA2.toggleWhenPressed(new IntakeSpinPID(-200));
+        buttonB2.toggleWhenPressed(new IntakeSpinPID(0));
+        buttonY2.toggleWhenPressed(new IntakeSpinPID(300));
         buttonX2.toggleWhenPressed(new HatchPanelCommand());
+        buttonLeft2.whenPressed(new ELUPCountCommand());
+        buttonRight2.whenPressed(new ELDownCountCommand());
     }
 
     public double getLeftAxis(int port) {
@@ -60,13 +62,4 @@ public class OI {
         return xboxRight.getRawButton(port);
     }
 
-    public boolean getDrivetrainRevert() {
-        if (xboxLeft.getRawButton(1)) {
-            Timer.delay(0.02);
-            if (!xboxLeft.getRawButton(1)) {
-                revertDT++;
-            }
-        }
-        return revertDT % 2 != 0;
-    }
 }

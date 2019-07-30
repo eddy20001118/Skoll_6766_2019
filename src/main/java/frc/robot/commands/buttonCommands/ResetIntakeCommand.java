@@ -5,42 +5,37 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.buttonCommands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-public class ElevatorRawCommand extends Command {
-    public ElevatorRawCommand() {
+public class ResetIntakeCommand extends Command {
+    public ResetIntakeCommand() {
 
     }
 
     @Override
     protected void initialize() {
-        Robot.elevatorSubsytem.config();
+
     }
 
     @Override
     protected void execute() {
-        double input = Robot.m_oi.getRightAxis(3) - Robot.m_oi.getRightAxis(2);
-        if (input < 0.1 && input > -0.1) {
-            Robot.elevatorSubsytem.setSpeed(0.05);
-        }
-        Robot.elevatorSubsytem.setSpeed(input);
+        Robot.intakeSubsystem.resetEncoder();
     }
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     @Override
     protected void end() {
-        Robot.elevatorSubsytem.setSpeed(0);
     }
 
     @Override
     protected void interrupted() {
-        end();
     }
 }

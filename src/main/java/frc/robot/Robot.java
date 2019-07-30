@@ -1,7 +1,10 @@
 package frc.robot;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.BackGroundCommand;
 import frc.robot.commands.MainCommandGroup;
 import frc.robot.constants.PIDConstants;
@@ -19,20 +22,20 @@ public class Robot extends TimedRobot {
     //    Command instances
     public BackGroundCommand backGroundCommand = new BackGroundCommand();
     public MainCommandGroup mainCommandGroup = new MainCommandGroup();
+    public frc.robot.commands.intakeCommands.IntakeSpinPID intakeSpinPID = new frc.robot.commands.intakeCommands.IntakeSpinPID(200);
 
     //    Constants objects
     public static TimeConstants timeConstants = new TimeConstants();
     public static PhysicsConstants physicsConstants = new PhysicsConstants();
     public static PortConstants portConstants = new PortConstants();
     public static PIDConstants elevatorPID = new PIDConstants("Elevator", 0.5, 0, 0);
-    public static PIDConstants intakePID = new PIDConstants("Intake", 0, 0, 0);
-    public static PIDConstants dtLeftPID = new PIDConstants("dtLeft", 0.5, 0, 0);
-    public static PIDConstants dtRightPID = new PIDConstants("dtRight", 0.5, 0, 0);
+    public static PIDConstants intakePID = new PIDConstants("Intake", 100, 0, 0);
 
     //    Subsystem instances
     public static ElevatorSubsystem elevatorSubsytem = new ElevatorSubsystem();
     public static IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     public static DrivetrainSubsystem drivetrainSubsystem = new DrivetrainSubsystem();
+    public UsbCamera camera0, camera1;
 
     @Override
     public void robotInit() {
@@ -42,19 +45,14 @@ public class Robot extends TimedRobot {
 
         elevatorSubsytem.resetEncoder();
         intakeSubsystem.resetEncoder();
+
+        camera0 = CameraServer.getInstance().startAutomaticCapture(0);
+        camera1 = CameraServer.getInstance().startAutomaticCapture(1);
+
     }
 
     @Override
     public void robotPeriodic() {
-        Scheduler.getInstance().run();
-    }
-
-    @Override
-    public void disabledInit() {
-    }
-
-    @Override
-    public void disabledPeriodic() {
         Scheduler.getInstance().run();
     }
 
@@ -71,13 +69,23 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         mainCommandGroup.start();
-
-        elevatorSubsytem.resetEncoder();
-        intakeSubsystem.resetEncoder();
     }
 
     @Override
     public void teleopPeriodic() {
+        Scheduler.getInstance().run();
+    }
+
+    @Override
+    public void disabledInit() {
+        Robot.drivetrainSubsystem.arcadeDrive(0, 0);
+        Robot.elevatorSubsytem.setSpeed(0);
+        Robot.intakeSubsystem.setIntakeSpeed(0);
+        Robot.intakeSubsystem.setIntakeUDSpeed(0, 0);
+    }
+
+    @Override
+    public void disabledPeriodic() {
         Scheduler.getInstance().run();
     }
 

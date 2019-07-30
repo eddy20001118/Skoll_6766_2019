@@ -5,36 +5,37 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.buttonCommands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-public class HatchPanelCommand extends Command {
-    public HatchPanelCommand() {
+public class ResetElevatorCommand extends Command {
+    public ResetElevatorCommand() {
+
     }
 
     @Override
     protected void initialize() {
+
     }
 
     @Override
     protected void execute() {
-        Robot.intakeSubsystem.setHatchSolenoid(true);
+        Robot.elevatorSubsytem.resetEncoder();
     }
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     @Override
     protected void end() {
-        Robot.intakeSubsystem.setHatchSolenoid(false);
     }
 
     @Override
     protected void interrupted() {
-        end();
     }
 }
