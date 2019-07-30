@@ -4,15 +4,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class PortConstants implements Constants {
 //    CAN port
-    public int pElevatorMain = 1;
-    public int pElevatorSlave = 2;
-    public int pDtLeftMain = 3;
-    public int pDtLeftSlave = 4;
-    public int pDtRightMain = 5;
-    public int pDtRightSlave = 6;
-    public int pIntakeSpin = 7;
-    public int pIntakeUp = 8;
-    public int pIntakeDown = 9;
+    public int pElevatorMain = 11;
+    public int pElevatorSlave = 12;
+    public int pDtLeftMain = 19;
+    public int pDtLeftSlave = 17;
+    public int pDtRightMain = 16;
+    public int pDtRightSlave = 15;
+    public int pIntakeSpin = 13;
+    public int pIntakeUp = 14;
+    public int pIntakeDown = 18;
 
 //    DigitalInput port
     public int pIFRLeft = 0;

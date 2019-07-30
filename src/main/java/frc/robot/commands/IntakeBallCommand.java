@@ -10,23 +10,24 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class ElevatorRawCommand extends Command {
-    public ElevatorRawCommand() {
+public class IntakeBallCommand extends Command {
+    double upSpeed = 0;
+    double downSpeed = 0;
 
+
+    public IntakeBallCommand(double upSpeed, double downSpeed) {
+        this.downSpeed = downSpeed;
+        this.upSpeed = upSpeed;
     }
 
     @Override
     protected void initialize() {
-        Robot.elevatorSubsytem.config();
+        Robot.intakeSubsystem.intake_config();
     }
 
     @Override
     protected void execute() {
-        double input = Robot.m_oi.getRightAxis(3) - Robot.m_oi.getRightAxis(2);
-        if (input < 0.1 && input > -0.1) {
-            Robot.elevatorSubsytem.setSpeed(0.05);
-        }
-        Robot.elevatorSubsytem.setSpeed(input);
+        Robot.intakeSubsystem.setIntakeUDSpeed(upSpeed, downSpeed);
     }
 
     @Override
@@ -36,7 +37,7 @@ public class ElevatorRawCommand extends Command {
 
     @Override
     protected void end() {
-        Robot.elevatorSubsytem.setSpeed(0);
+        Robot.intakeSubsystem.setIntakeUDSpeed(0, 0);
     }
 
     @Override

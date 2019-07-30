@@ -1,9 +1,6 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SPI;
@@ -13,8 +10,8 @@ import frc.robot.Robot;
 public class DrivetrainSubsystem extends Subsystem {
     private ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
 
-    private WPI_TalonSRX dtLeftMain = new WPI_TalonSRX(Robot.portConstants.pDtLeftMain);
-    private WPI_TalonSRX dtRightMain = new WPI_TalonSRX(Robot.portConstants.pDtRightMain);
+    private WPI_VictorSPX dtLeftMain = new WPI_VictorSPX(Robot.portConstants.pDtLeftMain);
+    private WPI_VictorSPX dtRightMain = new WPI_VictorSPX(Robot.portConstants.pDtRightMain);
     private WPI_VictorSPX dtLeftSlave = new WPI_VictorSPX(Robot.portConstants.pDtLeftSlave);
     private WPI_VictorSPX dtRightSlave = new WPI_VictorSPX(Robot.portConstants.pDtRightSlave);
 
@@ -35,28 +32,8 @@ public class DrivetrainSubsystem extends Subsystem {
         dtLeftMain.configFactoryDefault();
         dtRightMain.configFactoryDefault();
 
-        dtLeftMain.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Robot.timeConstants.kTimeOutMs);
-        dtRightMain.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Robot.timeConstants.kTimeOutMs);
-
-        dtLeftMain.setSensorPhase(true);
-        dtRightMain.setSensorPhase(true);
-
-        dtLeftMain.setNeutralMode(NeutralMode.Brake);
-        dtRightMain.setNeutralMode(NeutralMode.Brake);
-
-        dtLeftMain.configClosedloopRamp(Robot.physicsConstants.dtRampRate, Robot.timeConstants.kTimeOutMs);
-        dtRightMain.configClosedloopRamp(Robot.physicsConstants.dtRampRate, Robot.timeConstants.kTimeOutMs);
-
         dtLeftMain.configOpenloopRamp(Robot.physicsConstants.dtRampRate, Robot.timeConstants.kTimeOutMs);
         dtRightMain.configOpenloopRamp(Robot.physicsConstants.dtRampRate, Robot.timeConstants.kTimeOutMs);
-
-        dtLeftMain.config_kP(0, Robot.dtLeftPID.kP, Robot.timeConstants.kTimeOutMs);
-        dtLeftMain.config_kI(0, Robot.dtLeftPID.kI,Robot.timeConstants.kTimeOutMs);
-        dtLeftMain.config_kD(0, Robot.dtLeftPID.kD, Robot.timeConstants.kTimeOutMs);
-
-        dtRightMain.config_kP(0,Robot.dtRightPID.kP,Robot.timeConstants.kTimeOutMs);
-        dtRightMain.config_kI(0, Robot.dtRightPID.kI,Robot.timeConstants.kTimeOutMs);
-        dtRightMain.config_kD(0,Robot.dtRightPID.kD,Robot.timeConstants.kTimeOutMs);
 
         dtLeftSlave.follow(dtLeftMain);
         dtRightSlave.follow(dtRightMain);
@@ -66,6 +43,19 @@ public class DrivetrainSubsystem extends Subsystem {
     }
 
     public void arcadeDrive(double linearX, double angularZ) {
+        double currentPosition = Robot.elevatorSubsytem.getPosition();
+        angularZ *= 0.5;
+        if (currentPosition < Robot.physicsConstants.elevatorLevelOneR) {
+            linearX *= 0.7;
+            angularZ *= 0.7;
+        } else if (currentPosition < Robot.physicsConstants.elevatorLevelTwoR) {
+            linearX *= 0.6;
+            angularZ *= 0.6;
+        } else if (currentPosition < Robot.physicsConstants.elevatorLevelThreeR) {
+            linearX *= 0.5;
+            angularZ *= 0.5;
+        }
+
         leftSpeed = linearX + angularZ;
         rightSpeed = linearX - angularZ;
 
@@ -87,7 +77,7 @@ public class DrivetrainSubsystem extends Subsystem {
         return dtLeftMain.getSelectedSensorVelocity();
     }
 
-    public double getRightSpeed(){
+    public double getRightSpeed() {
         return dtRightMain.getSelectedSensorVelocity();
     }
 }

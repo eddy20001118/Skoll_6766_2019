@@ -1,25 +1,20 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.ElevatorCommand.levelHeight;
-import frc.robot.commands.ElevatorCommand;
+import frc.robot.commands.HatchPanelCommand;
+import frc.robot.commands.IntakeBallCommand;
+import frc.robot.commands.IntakeBallReleaseCommand;
+import frc.robot.commands.IntakeSpinCP;
 
-/**
- * This class is the glue that binds the controls on the physical operator
- * interface to the commands and command groups that allow control of the robot.
- */
 public class OI {
+    public boolean finish = false;
     public Joystick xboxLeft = new Joystick(0);
     public Joystick xboxRight = new Joystick(1);
+    public int revertDT = 0;
+    public int elevatorPosition = 0;
 
     public Button buttonA1 = new JoystickButton(xboxLeft, 1),
             buttonB1 = new JoystickButton(xboxLeft, 2),
@@ -40,9 +35,13 @@ public class OI {
             buttonStart2 = new JoystickButton(xboxRight, 8);
 
     public OI() {
-        // buttonA1.whenPressed(new ElevatorCommand(levelHeight.LEVEL_1));
-        // buttonB1.whenPressed(new ElevatorCommand(levelHeight.LEVEL_2));
-        // buttonX1.whenPressed(new ElevatorCommand(levelHeight.LEVEL_3));
+        buttonA1.whileHeld(new IntakeBallReleaseCommand(-0.5, -0.5));
+        buttonB1.whileHeld(new IntakeBallCommand(0.5,0.5));
+
+        buttonA2.toggleWhenPressed(new IntakeSpinCP(-5000));
+        buttonB2.toggleWhenPressed(new IntakeSpinCP(0));
+        buttonY2.toggleWhenPressed(new IntakeSpinCP(30000));
+        buttonX2.toggleWhenPressed(new HatchPanelCommand());
     }
 
     public double getLeftAxis(int port) {
@@ -51,5 +50,23 @@ public class OI {
 
     public boolean getLeftButton(int port) {
         return xboxLeft.getRawButton(port);
+    }
+
+    public double getRightAxis(int port) {
+        return xboxRight.getRawAxis(port);
+    }
+
+    public boolean getRightButton(int port) {
+        return xboxRight.getRawButton(port);
+    }
+
+    public boolean getDrivetrainRevert() {
+        if (xboxLeft.getRawButton(1)) {
+            Timer.delay(0.02);
+            if (!xboxLeft.getRawButton(1)) {
+                revertDT++;
+            }
+        }
+        return revertDT % 2 != 0;
     }
 }

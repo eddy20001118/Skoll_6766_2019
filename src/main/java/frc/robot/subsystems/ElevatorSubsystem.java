@@ -4,15 +4,15 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class ElevatorSubsystem extends Subsystem {
 
     // Initialise motor controller
     private WPI_TalonSRX elevatorMain;
-    private WPI_VictorSPX elevatorSlave;
+    private WPI_TalonSRX elevatorSlave;
 
     public ElevatorSubsystem() {
         config();
@@ -24,22 +24,17 @@ public class ElevatorSubsystem extends Subsystem {
 
     public void config() {
         elevatorMain = new WPI_TalonSRX(Robot.portConstants.pElevatorMain);
-        elevatorSlave = new WPI_VictorSPX(Robot.portConstants.pElevatorSlave);
+        elevatorSlave = new WPI_TalonSRX(Robot.portConstants.pElevatorSlave);
 
 //        Main talon controller programmed with mag encoder
         elevatorMain.configFactoryDefault();
         elevatorMain.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Robot.timeConstants.kTimeOutMs);
         elevatorMain.setSensorPhase(true);
         elevatorMain.setNeutralMode(NeutralMode.Brake);
+        elevatorSlave.setNeutralMode(NeutralMode.Brake);
         elevatorMain.configMotionAcceleration(Robot.physicsConstants.elevatorAccel, Robot.timeConstants.kTimeOutMs);
         elevatorMain.configMotionCruiseVelocity(Robot.physicsConstants.elevatorCruiseV, Robot.timeConstants.kTimeOutMs);
         elevatorMain.configMotionSCurveStrength(Robot.physicsConstants.elevatorSCurveStrength, Robot.timeConstants.kTimeOutMs);
-
-//        Config soft limit
-        elevatorMain.configForwardSoftLimitThreshold(Robot.physicsConstants.elevatorForwardSensorLimit, Robot.timeConstants.kTimeOutMs);
-        elevatorMain.configReverseSoftLimitThreshold(Robot.physicsConstants.elevatorReverseSensorLimit, Robot.timeConstants.kTimeOutMs);
-        elevatorMain.configForwardSoftLimitEnable(Robot.physicsConstants.elevatorForwardSoftLimit, Robot.timeConstants.kTimeOutMs);
-        elevatorMain.configReverseSoftLimitEnable(Robot.physicsConstants.elevatorReverseSoftLimit, Robot.timeConstants.kTimeOutMs);
 
 //        Config ramp rate
         elevatorMain.configClosedloopRamp(Robot.physicsConstants.elevatorRampRate, Robot.timeConstants.kTimeOutMs);
@@ -52,12 +47,12 @@ public class ElevatorSubsystem extends Subsystem {
 
 //        Config follow mode
         elevatorSlave.follow(elevatorMain);
-        elevatorSlave.setInverted(true);
+        elevatorSlave.setInverted(false);
 
     }
 
-    public void setRotation(double targetRotation) {
-        elevatorMain.set(ControlMode.MotionMagic, targetRotation * 4096);
+    public void setPosition(double targetPosition) {
+        elevatorMain.set(ControlMode.MotionMagic, targetPosition);
     }
 
     public void setSpeed(double targetSpeed) {
@@ -65,15 +60,19 @@ public class ElevatorSubsystem extends Subsystem {
     }
 
     public void resetEncoder() {
-        elevatorMain.setSelectedSensorPosition(0,0,Robot.timeConstants.kTimeOutMs);
+        elevatorMain.setSelectedSensorPosition(0, 0, Robot.timeConstants.kTimeOutMs);
     }
 
     public double getSpeed() {
-        return elevatorMain.getSelectedSensorVelocity();
+        double speed = elevatorMain.getSelectedSensorVelocity();
+        SmartDashboard.putNumber("Sensor/elevatorSpeed", speed);
+        return speed;
     }
 
     public double getPosition() {
-        return elevatorMain.getSelectedSensorPosition();
+        double position = elevatorMain.getSelectedSensorPosition();
+        SmartDashboard.putNumber("Sensor/elevatorPosition", position);
+        return position;
     }
 
 }

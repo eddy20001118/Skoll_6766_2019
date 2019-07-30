@@ -14,14 +14,15 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 
 public class IntakeSubsystem extends Subsystem {
 
-    private WPI_VictorSPX intakeMacin; // Victor1 Open-loop Macin
-    private WPI_VictorSPX intakeAttrition;// Victor2 Open-loop Attrition
-    private WPI_TalonSRX intakeMotor;// Talon1 Closed-loop
+    private WPI_TalonSRX intakeMacin;
+    private WPI_VictorSPX intakeAttrition;
+    private WPI_TalonSRX intakeMotor;
     private Solenoid hatchSolenoid;
 
     public IntakeSubsystem() {
@@ -29,55 +30,42 @@ public class IntakeSubsystem extends Subsystem {
     }
 
     public void intake_config() {
-        intakeAttrition = new WPI_VictorSPX(Robot.portConstants.pIntakeSpin);
-        intakeMacin = new WPI_VictorSPX(Robot.portConstants.pIntakeUp);
-        intakeMotor = new WPI_TalonSRX(Robot.portConstants.pIntakeDown);
-//        hatchSolenoid = new Solenoid(Robot.portConstants.pHatchPanel);
+        intakeAttrition = new WPI_VictorSPX(Robot.portConstants.pIntakeDown);
+        intakeMacin = new WPI_TalonSRX(Robot.portConstants.pIntakeUp);
+        intakeMotor = new WPI_TalonSRX(Robot.portConstants.pIntakeSpin);
+        hatchSolenoid = new Solenoid(Robot.portConstants.pHatchPanel);
 
 //      Main talon controller programmed with mag encoder
         intakeMotor.configFactoryDefault();
         intakeMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Robot.timeConstants.kTimeOutMs);
-        intakeMotor.setSensorPhase(true);
+        intakeMotor.setSensorPhase(false);
         intakeMotor.setNeutralMode(NeutralMode.Brake);
-
-//      position loop set
-        intakeMotor.configForwardSoftLimitEnable(Robot.physicsConstants.intakeForwardSoftLimit);
-        intakeMotor.configForwardSoftLimitThreshold(Robot.physicsConstants.intakeForwardSensorLimit, Robot.timeConstants.kTimeOutMs);
-        intakeMotor.configReverseSoftLimitEnable(true);
-        intakeMotor.configReverseSoftLimitThreshold(Robot.physicsConstants.intakeReverseSensorLimit, Robot.timeConstants.kTimeOutMs);
-
-        intakeMotor.configAllowableClosedloopError(Robot.portConstants.pIntakeSpin, Robot.physicsConstants.intakeAllowableCloseLoopError, Robot.timeConstants.kTimeOutMs);
-        intakeMotor.configMotionCruiseVelocity(Robot.physicsConstants.intakeCruiseV, Robot.timeConstants.kTimeOutMs);
-        intakeMotor.configMotionSCurveStrength(Robot.physicsConstants.intakeSCurveStrength, Robot.timeConstants.kTimeOutMs);
 
 //      Config ramp rate
         intakeMotor.configClosedloopRamp(Robot.physicsConstants.intakeRampRate, Robot.timeConstants.kTimeOutMs);
         intakeMotor.configOpenloopRamp(Robot.physicsConstants.intakeRampRate, Robot.timeConstants.kTimeOutMs);
 
-//      Config PID value
-        intakeMotor.config_kP(0, Robot.intakePID.kP, Robot.timeConstants.kTimeOutMs);
-        intakeMotor.config_kI(0, Robot.intakePID.kI, Robot.timeConstants.kTimeOutMs);
-        intakeMotor.config_kD(0, Robot.intakePID.kD, Robot.timeConstants.kTimeOutMs);
-
+        intakeMotor.setInverted(true);
 //      Open-loop motors
         intakeMacin.configFactoryDefault();
         intakeAttrition.configFactoryDefault();
-        intakeMacin.setInverted(Robot.physicsConstants.macinInvert);
-        intakeAttrition.setInverted(!Robot.physicsConstants.macinInvert);
+        intakeMacin.configOpenloopRamp(Robot.physicsConstants.intakeRampRate, Robot.timeConstants.kTimeOutMs);
+        intakeAttrition.configOpenloopRamp(Robot.physicsConstants.intakeRampRate, Robot.timeConstants.kTimeOutMs);
 
+        intakeAttrition.setInverted(true);
     }
 
-    public void setIntakeRotation(double targetRotation) {
-        intakeMotor.set(ControlMode.MotionMagic, targetRotation * 4096);
+    public void setIntakePosition(double targetPosition) {
+        intakeMotor.set(ControlMode.MotionMagic, targetPosition);
     }
 
     public void setIntakeSpeed(double targetSpeed) {
         intakeMotor.set(ControlMode.PercentOutput, targetSpeed);
     }
 
-    public void setIntakeUDSpeed(double targetSpeedUp, double targerSpeedDown) {
+    public void setIntakeUDSpeed(double targetSpeedUp, double targetSpeedDown) {
         intakeMacin.set(ControlMode.PercentOutput, targetSpeedUp);
-        intakeAttrition.set(ControlMode.PercentOutput, targerSpeedDown);
+        intakeAttrition.set(ControlMode.PercentOutput, targetSpeedDown);
     }
 
     public void setHatchSolenoid(boolean forward) {
@@ -89,11 +77,15 @@ public class IntakeSubsystem extends Subsystem {
     }
 
     public double getSpeed() {
-        return intakeMotor.getSelectedSensorVelocity();
+        double velocity = intakeMotor.getSelectedSensorVelocity();
+        SmartDashboard.putNumber("Sensor/intakeSpeed", velocity);
+        return velocity;
     }
 
     public double getPosition() {
-        return intakeMotor.getSelectedSensorPosition();
+        double position = intakeMotor.getSelectedSensorPosition();
+        SmartDashboard.putNumber("Sensor/intakePostion", position);
+        return position;
     }
 
 

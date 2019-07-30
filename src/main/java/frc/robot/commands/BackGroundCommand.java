@@ -11,51 +11,49 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class BackGroundCommand extends Command {
-    int refreshCount = 0;
 
     public BackGroundCommand() {
 
     }
 
-    // Called just before this Command runs the first time
     @Override
     protected void initialize() {
         Robot.timeConstants.set();
         Robot.physicsConstants.set();
         Robot.portConstants.set();
         Robot.elevatorPID.set();
+        Robot.intakePID.set();
     }
 
-    // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
         Robot.timeConstants.refresh();
         Robot.physicsConstants.refresh();
         Robot.portConstants.refresh();
         Robot.elevatorPID.refresh();
+        Robot.intakePID.refresh();
 
-//        if (refreshCount >= 100) {
-//            timeConstants.print_value();
-//            physicsConstants.print_value();
-//            refreshCount = 0;
-//        }
-//
-//        refreshCount++;
+        Robot.elevatorSubsytem.getSpeed();
+        Robot.intakeSubsystem.getSpeed();
+        Robot.elevatorSubsytem.getPosition();
+        Robot.intakeSubsystem.getPosition();
+
+        if (Robot.m_oi.getLeftButton(5))
+            Robot.elevatorSubsytem.resetEncoder();
+
+        if (Robot.m_oi.getLeftButton(6))
+            Robot.intakeSubsystem.resetEncoder();
     }
 
-    // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
         return false;
     }
 
-    // Called once after isFinished returns true
     @Override
     protected void end() {
     }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
     @Override
     protected void interrupted() {
     }

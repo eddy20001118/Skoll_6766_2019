@@ -11,36 +11,40 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class JoystickCommand extends Command {
-  public JoystickCommand() {
-  }
-
-  @Override
-  protected void initialize() {
-    Robot.drivetrainSubsystem.config();
-  }
-
-  @Override
-  protected void execute() {
-    double linearX = Robot.m_oi.getLeftAxis(3)-Robot.m_oi.getLeftAxis(2);
-    double angularZ = Robot.m_oi.getLeftAxis(0);
-
-    if (linearX >= 0.9 && angularZ >= 0.7){
-      linearX *= 0.3;
+    public JoystickCommand() {
     }
 
-    Robot.drivetrainSubsystem.arcadeDrive(linearX, angularZ);
-  }
+    @Override
+    protected void initialize() {
+        Robot.drivetrainSubsystem.config();
+    }
 
-  @Override
-  protected boolean isFinished() {
-    return false;
-  }
+    @Override
+    protected void execute() {
+        double linearX = Robot.m_oi.getLeftAxis(3) - Robot.m_oi.getLeftAxis(2);
+        double angularZ = Robot.m_oi.getLeftAxis(0);
 
-  @Override
-  protected void end() {
-  }
+        if (Robot.m_oi.getDrivetrainRevert()){
+            linearX *= -1;
+        }
 
-  @Override
-  protected void interrupted() {
-  }
+        if (linearX >= 0.9 && angularZ >= 0.7) {
+            linearX *= 0.3;
+        }
+
+        Robot.drivetrainSubsystem.arcadeDrive(linearX, angularZ);
+    }
+
+    @Override
+    protected boolean isFinished() {
+        return false;
+    }
+
+    @Override
+    protected void end() {
+    }
+
+    @Override
+    protected void interrupted() {
+    }
 }
