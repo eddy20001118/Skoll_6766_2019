@@ -17,7 +17,8 @@ public class JoystickCommand extends Command {
     @Override
     protected void execute() {
         double linearX = Robot.m_oi.getLeftAxis(3) - Robot.m_oi.getLeftAxis(2);
-        double angularZ = Robot.m_oi.getLeftAxis(0);
+        double angularZ = Robot.m_oi.getLeftAxis(0) + Robot.m_oi.getLeftAxis(4);
+
         SmartDashboard.putBoolean("DTRevert", Robot.m_oi.dtRevert);
 
         if (Robot.m_oi.dtRevert) {
@@ -26,6 +27,14 @@ public class JoystickCommand extends Command {
 
         if (linearX >= 0.9 && angularZ >= 0.7) {
             linearX *= 0.3;
+        }
+
+        if (Robot.m_oi.getLeftButton(5)) {
+            angularZ -= 0.4;
+        }
+
+        if (Robot.m_oi.getLeftButton(6)) {
+            angularZ += 0.4;
         }
 
         Robot.drivetrainSubsystem.arcadeDrive(linearX, angularZ);

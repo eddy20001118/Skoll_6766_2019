@@ -30,6 +30,7 @@ public class ELDownCountCommand extends Command {
         if (Robot.m_oi.elevatorLevel < 3) {
             Robot.m_oi.elevatorLevel++;
         }
+        SmartDashboard.putNumber("ElevatorLevel", Robot.m_oi.elevatorLevel);
     }
 
     @Override
@@ -39,6 +40,7 @@ public class ELDownCountCommand extends Command {
 
     @Override
     protected void end() {
+        SmartDashboard.putNumber("ElevatorLevel", Robot.m_oi.elevatorLevel);
     }
 
     @Override

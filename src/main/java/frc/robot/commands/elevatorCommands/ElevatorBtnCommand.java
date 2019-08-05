@@ -5,36 +5,41 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.buttonCommands;
+package frc.robot.commands.elevatorCommands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class ResetElevatorCommand extends Command {
-    public ResetElevatorCommand() {
+public class ElevatorBtnCommand extends Command {
+    public double speed;
 
+    public ElevatorBtnCommand(double speed) {
+        this.speed = speed;
     }
 
     @Override
     protected void initialize() {
-
+        Robot.elevatorSubsytem.config();
     }
 
     @Override
     protected void execute() {
-        Robot.elevatorSubsytem.resetEncoder();
+        Robot.elevatorSubsytem.setSpeed(speed);
     }
 
     @Override
     protected boolean isFinished() {
-        return true;
+        return false;
+//        return this.timeSinceInitialized() >= 1;
     }
 
     @Override
     protected void end() {
+        Robot.elevatorSubsytem.setSpeed(0);
     }
 
     @Override
     protected void interrupted() {
+        end();
     }
 }

@@ -3,15 +3,25 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.buttonCommands.*;
-import frc.robot.commands.intakeCommands.*;
+import frc.robot.commands.buttonCommands.DriveTrainRevertCommand;
+import frc.robot.commands.elevatorCommands.ElevatorBtnCommand;
+import frc.robot.commands.intakeCommands.ChongqiCommand;
+import frc.robot.commands.intakeCommands.HatchPanelCommand;
+import frc.robot.commands.intakeCommands.IntakeBallCommand;
+import frc.robot.commands.intakeCommands.IntakeBallReleaseCommand;
 
 public class OI {
     public Joystick xboxLeft = new Joystick(0);
     public Joystick xboxRight = new Joystick(1);
 
-    public int elevatorLevel = 0; // elevatorLevel from 0 - 3
+    public int elevatorLevel = -1; // elevatorLevel from 0 - 3
     public boolean dtRevert = false; // drivetrain revert flag
+
+//    public IntakeSpinPIDCommand intakeDown = new IntakeSpinPIDCommand(-200, 1);
+//    public IntakeSpinPIDCommand intakeMiddle = new IntakeSpinPIDCommand(60, 2);
+//    public IntakeSpinPIDCommand intakeUp = new IntakeSpinPIDCommand(300, 3);
+
+    public HatchPanelCommand hatchPanelCommand = new HatchPanelCommand();
 
     public Button buttonA1 = new JoystickButton(xboxLeft, 1),
             buttonB1 = new JoystickButton(xboxLeft, 2),
@@ -32,18 +42,16 @@ public class OI {
             buttonStart2 = new JoystickButton(xboxRight, 8);
 
     public OI() {
-        buttonA1.whileHeld(new IntakeBallReleaseCommand(-0.5, -0.5));
-        buttonB1.whileHeld(new IntakeBallCommand(0.5, 0.5));
-        buttonX1.toggleWhenPressed(new DriveTrainRevertCommand());
-        buttonLeft1.whenPressed(new ResetElevatorCommand());
-        buttonRight1.whenPressed(new ResetIntakeCommand());
+        buttonA1.toggleWhenPressed(new IntakeBallReleaseCommand(-0.5, -0.5));
+        buttonB1.whileHeld(new IntakeBallCommand(0.7, 0.7));
+        buttonX1.toggleWhenPressed(hatchPanelCommand);
+        buttonBack1.toggleWhenPressed(new IntakeBallCommand(0, 0));
+//        buttonStart1.toggleWhenPressed(new DriveTrainRevertCommand());
+        buttonY1.toggleWhenPressed(new IntakeBallCommand(0, 0));
 
-        buttonA2.toggleWhenPressed(new IntakeSpinPID(-200));
-        buttonB2.toggleWhenPressed(new IntakeSpinPID(0));
-        buttonY2.toggleWhenPressed(new IntakeSpinPID(300));
-        buttonX2.toggleWhenPressed(new HatchPanelCommand());
-        buttonLeft2.whenPressed(new ELUPCountCommand());
-        buttonRight2.whenPressed(new ELDownCountCommand());
+        buttonStart1.toggleWhenPressed(new ElevatorBtnCommand(0));
+        buttonX2.toggleWhenPressed(hatchPanelCommand);
+        buttonBack2.toggleWhenPressed(new ChongqiCommand());
     }
 
     public double getLeftAxis(int port) {

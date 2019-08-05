@@ -5,36 +5,40 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.buttonCommands;
+package frc.robot.commands.intakeCommands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class ResetElevatorCommand extends Command {
-    public ResetElevatorCommand() {
+public class IntakeSpinBtnCommand extends Command {
+    public double speed;
 
+    public IntakeSpinBtnCommand(double speed) {
+        this.speed = speed;
     }
 
     @Override
     protected void initialize() {
-
+        Robot.intakeSubsystem.intake_config();
     }
 
     @Override
     protected void execute() {
-        Robot.elevatorSubsytem.resetEncoder();
+        Robot.intakeSubsystem.setIntakeSpeed(speed);
     }
 
     @Override
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     @Override
     protected void end() {
+        Robot.intakeSubsystem.setIntakeSpeed(0);
     }
 
     @Override
     protected void interrupted() {
+        end();
     }
 }

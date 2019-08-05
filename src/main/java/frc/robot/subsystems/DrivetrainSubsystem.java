@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class DrivetrainSubsystem extends Subsystem {
@@ -43,21 +44,13 @@ public class DrivetrainSubsystem extends Subsystem {
     }
 
     public void arcadeDrive(double linearX, double angularZ) {
-        double currentPosition = Robot.elevatorSubsytem.getPosition();
-        angularZ *= 0.5;
-        if (currentPosition < Robot.physicsConstants.elevatorLevelOneR) {
-            linearX *= 0.7;
-            angularZ *= 0.7;
-        } else if (currentPosition < Robot.physicsConstants.elevatorLevelTwoR) {
-            linearX *= 0.6;
-            angularZ *= 0.6;
-        } else if (currentPosition < Robot.physicsConstants.elevatorLevelThreeR) {
-            linearX *= 0.5;
-            angularZ *= 0.5;
-        }
+        angularZ *= 0.77;
 
         leftSpeed = linearX + angularZ;
         rightSpeed = linearX - angularZ;
+
+        SmartDashboard.putNumber("LeftSpeed", leftSpeed);
+        SmartDashboard.putNumber("RightSpeed", rightSpeed);
 
         dtLeftMain.set(ControlMode.PercentOutput, leftSpeed);
         dtLeftSlave.set(ControlMode.PercentOutput, leftSpeed);

@@ -26,18 +26,20 @@ public class ELUPCountCommand extends Command {
 
     @Override
     protected void execute() {
-        if (Robot.m_oi.elevatorLevel > 0) {
+        if (Robot.m_oi.elevatorLevel > -1) {
             Robot.m_oi.elevatorLevel--;
         }
+        SmartDashboard.putNumber("ElevatorLevel", Robot.m_oi.elevatorLevel);
     }
 
     @Override
     protected boolean isFinished() {
-        return Robot.m_oi.elevatorLevel - oldLevelValue == -1 || Robot.m_oi.elevatorLevel == 0;
+        return Robot.m_oi.elevatorLevel - oldLevelValue == -1 || Robot.m_oi.elevatorLevel == -1;
     }
 
     @Override
     protected void end() {
+        SmartDashboard.putNumber("ElevatorLevel", Robot.m_oi.elevatorLevel);
     }
 
     @Override

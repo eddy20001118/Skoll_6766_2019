@@ -1,7 +1,6 @@
 package frc.robot.commands.intakeCommands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class IntakeSpinRawCommand extends Command {
@@ -16,7 +15,12 @@ public class IntakeSpinRawCommand extends Command {
 
     @Override
     protected void execute() {
-        Robot.intakeSubsystem.setIntakeSpeed(Robot.m_oi.getRightAxis(1));
+        double input = 0.5 * -Robot.m_oi.getRightAxis(1);
+        if (input >= 0.05 || input <= -0.05) {
+            Robot.intakeSubsystem.setIntakeSpeed(input);
+        } else {
+            Robot.intakeSubsystem.setIntakeSpeed(0.04);
+        }
     }
 
     @Override

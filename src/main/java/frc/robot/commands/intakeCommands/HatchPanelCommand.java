@@ -1,7 +1,6 @@
 package frc.robot.commands.intakeCommands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class HatchPanelCommand extends Command {
@@ -16,7 +15,7 @@ public class HatchPanelCommand extends Command {
 
     @Override
     protected void execute() {
-        Robot.intakeSubsystem.setHatchSolenoid(true);
+        Robot.intakeSubsystem.setHatchSolenoid0(true);
     }
 
     @Override
@@ -26,7 +25,7 @@ public class HatchPanelCommand extends Command {
 
     @Override
     protected void end() {
-        Robot.intakeSubsystem.setHatchSolenoid(false);
+        Robot.intakeSubsystem.setHatchSolenoid0(false);
     }
 
     @Override

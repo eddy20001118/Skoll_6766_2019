@@ -1,7 +1,6 @@
 package frc.robot.commands.intakeCommands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class IntakeBallReleaseCommand extends Command {

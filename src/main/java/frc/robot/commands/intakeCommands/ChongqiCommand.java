@@ -5,36 +5,36 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.buttonCommands;
+package frc.robot.commands.intakeCommands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class ResetElevatorCommand extends Command {
-    public ResetElevatorCommand() {
+public class ChongqiCommand extends Command {
+  public ChongqiCommand() {
+  }
 
-    }
+  @Override
+  protected void initialize() {
+  }
 
-    @Override
-    protected void initialize() {
+  @Override
+  protected void execute() {
+      Robot.intakeSubsystem.chongqi();
+  }
 
-    }
+  @Override
+  protected boolean isFinished() {
+    return false;
+  }
 
-    @Override
-    protected void execute() {
-        Robot.elevatorSubsytem.resetEncoder();
-    }
+  @Override
+  protected void end() {
+      Robot.intakeSubsystem.stopchongqi();
+  }
 
-    @Override
-    protected boolean isFinished() {
-        return true;
-    }
-
-    @Override
-    protected void end() {
-    }
-
-    @Override
-    protected void interrupted() {
-    }
+  @Override
+  protected void interrupted() {
+      end();
+  }
 }

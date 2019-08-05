@@ -19,7 +19,8 @@ public class PortConstants implements Constants {
     public int pIFRRight = 1;
 
 //    Solenoid Node ID
-    public int pHatchPanel = 1;
+    public int pHatchPanel0 = 0;
+    public int pHatchPanel1 = 1;
 
     @Override
     public void refresh() {
@@ -39,7 +40,7 @@ public class PortConstants implements Constants {
         this.pIFRRight = (int) SmartDashboard.getNumber("/Port/pIFRRight", this.pIFRRight);
 
 //        Solenoid Node ID
-        this.pHatchPanel = (int) SmartDashboard.getNumber("/Port/pHatchPanel", this.pHatchPanel);
+        this.pHatchPanel0 = (int) SmartDashboard.getNumber("/Port/pHatchPanel", this.pHatchPanel0);
     }
 
     @Override
@@ -60,7 +61,7 @@ public class PortConstants implements Constants {
         SmartDashboard.putNumber("/Port/pIFRRight", pIFRRight);
 
 //      Solenoid Node ID
-        SmartDashboard.putNumber("/Port/pHatchPanel", pHatchPanel);
+        SmartDashboard.putNumber("/Port/pHatchPanel", pHatchPanel0);
     }
 
     @Override

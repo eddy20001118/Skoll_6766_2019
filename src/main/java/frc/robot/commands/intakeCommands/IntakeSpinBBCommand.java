@@ -1,14 +1,13 @@
 package frc.robot.commands.intakeCommands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-public class IntakeSpinCP extends Command {
+public class IntakeSpinBBCommand extends Command {
     double targetPosition;
     double currentPosition;
 
-    public IntakeSpinCP(double targetPosition) {
+    public IntakeSpinBBCommand(double targetPosition) {
         this.targetPosition = targetPosition;
 
     }

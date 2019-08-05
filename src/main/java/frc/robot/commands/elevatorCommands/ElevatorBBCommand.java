@@ -4,11 +4,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-public class ElevatorCP extends Command {
+public class ElevatorBBCommand extends Command {
     private double targetPosition = 0;
     private double currentPosition = 0;
 
-    public ElevatorCP() {
+    public ElevatorBBCommand() {
 
     }
 
@@ -22,22 +22,22 @@ public class ElevatorCP extends Command {
         SmartDashboard.putNumber("ElevatorLevel", Robot.m_oi.elevatorLevel);
 
         if (Robot.m_oi.elevatorLevel == 0) {
-            targetPosition = -33073;
+            targetPosition = 330;
         } else if (Robot.m_oi.elevatorLevel == 1) {
-            targetPosition = -40000;
+            targetPosition = 400;
         } else if (Robot.m_oi.elevatorLevel == 2) {
-            targetPosition = -50000;
+            targetPosition = 500;
         } else if (Robot.m_oi.elevatorLevel == 3) {
-            targetPosition = -60000;
-        } else {
-            targetPosition = 0;
+            targetPosition = 600;
+        } else if (Robot.m_oi.elevatorLevel == -1){
+            end();
         }
 
         currentPosition = Robot.elevatorSubsytem.getPosition();
         if (currentPosition < targetPosition - 200) {
-            Robot.elevatorSubsytem.setSpeed(-0.3);
-        } else if (currentPosition > targetPosition + 200) {
             Robot.elevatorSubsytem.setSpeed(0.3);
+        } else if (currentPosition > targetPosition + 200) {
+            Robot.elevatorSubsytem.setSpeed(-0.3);
         } else {
             Robot.elevatorSubsytem.setSpeed(0);
         }

@@ -8,7 +8,6 @@
 package frc.robot.commands.buttonCommands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class ResetIntakeCommand extends Command {

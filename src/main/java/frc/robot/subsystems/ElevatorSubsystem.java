@@ -29,21 +29,21 @@ public class ElevatorSubsystem extends Subsystem {
 //        Main talon controller programmed with mag encoder
         elevatorMain.configFactoryDefault();
         elevatorMain.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Robot.timeConstants.kTimeOutMs);
-        elevatorMain.setSensorPhase(true);
+        elevatorMain.setSensorPhase(false);
         elevatorMain.setNeutralMode(NeutralMode.Brake);
         elevatorSlave.setNeutralMode(NeutralMode.Brake);
-        elevatorMain.configMotionAcceleration(Robot.physicsConstants.elevatorAccel, Robot.timeConstants.kTimeOutMs);
-        elevatorMain.configMotionCruiseVelocity(Robot.physicsConstants.elevatorCruiseV, Robot.timeConstants.kTimeOutMs);
-        elevatorMain.configMotionSCurveStrength(Robot.physicsConstants.elevatorSCurveStrength, Robot.timeConstants.kTimeOutMs);
+//        elevatorMain.configMotionAcceleration(Robot.physicsConstants.elevatorAccel, Robot.timeConstants.kTimeOutMs);
+//        elevatorMain.configMotionCruiseVelocity(Robot.physicsConstants.elevatorCruiseV, Robot.timeConstants.kTimeOutMs);
+//        elevatorMain.configMotionSCurveStrength(Robot.physicsConstants.elevatorSCurveStrength, Robot.timeConstants.kTimeOutMs);
 
 //        Config ramp rate
-        elevatorMain.configClosedloopRamp(Robot.physicsConstants.elevatorRampRate, Robot.timeConstants.kTimeOutMs);
+//        elevatorMain.configClosedloopRamp(Robot.physicsConstants.elevatorRampRate, Robot.timeConstants.kTimeOutMs);
         elevatorMain.configOpenloopRamp(Robot.physicsConstants.elevatorRampRate, Robot.timeConstants.kTimeOutMs);
-
+//        elevatorMain.configNeutralDeadband(0.05);
 //        Config PID value
-        elevatorMain.config_kP(0, Robot.elevatorPID.kP, Robot.timeConstants.kTimeOutMs);
-        elevatorMain.config_kI(0, Robot.elevatorPID.kI, Robot.timeConstants.kTimeOutMs);
-        elevatorMain.config_kD(0, Robot.elevatorPID.kD, Robot.timeConstants.kTimeOutMs);
+//        elevatorMain.config_kP(0, Robot.elevatorPID.kP, Robot.timeConstants.kTimeOutMs);
+//        elevatorMain.config_kI(0, Robot.elevatorPID.kI, Robot.timeConstants.kTimeOutMs);
+//        elevatorMain.config_kD(0, Robot.elevatorPID.kD, Robot.timeConstants.kTimeOutMs);
 
 //        Config follow mode
         elevatorSlave.follow(elevatorMain);
@@ -56,6 +56,7 @@ public class ElevatorSubsystem extends Subsystem {
     }
 
     public void setSpeed(double targetSpeed) {
+        SmartDashboard.putNumber("Elevator", targetSpeed);
         elevatorMain.set(ControlMode.PercentOutput, targetSpeed);
     }
 
@@ -70,7 +71,7 @@ public class ElevatorSubsystem extends Subsystem {
     }
 
     public double getPosition() {
-        double position = elevatorMain.getSelectedSensorPosition();
+        double position = elevatorMain.getSelectedSensorPosition() / 100.0;
         SmartDashboard.putNumber("Sensor/elevatorPosition", position);
         return position;
     }

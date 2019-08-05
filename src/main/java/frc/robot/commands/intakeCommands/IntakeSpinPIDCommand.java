@@ -12,15 +12,17 @@ import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-public class IntakeSpinPID extends PIDCommand {
+public class IntakeSpinPIDCommand extends PIDCommand {
     public PIDController intakeController;
+    public int currentButton;
 
-    public IntakeSpinPID(double setPoint) {
+    public IntakeSpinPIDCommand(double setPoint, int currentButton) {
         super(Robot.intakePID.kP, Robot.intakePID.kI, Robot.intakePID.kD);
-        intakeController = getPIDController();
-        intakeController.setAbsoluteTolerance(4);
+        this.currentButton = currentButton;
+        intakeController = this.getPIDController();
+        intakeController.setAbsoluteTolerance(20);
         intakeController.setContinuous(false);
-        intakeController.setInputRange(-400, 400);
+        intakeController.setInputRange(-600, 600);
         intakeController.setOutputRange(-0.3, 0.3);
         intakeController.setSetpoint(setPoint);
         SmartDashboard.putData(intakeController);
@@ -29,12 +31,23 @@ public class IntakeSpinPID extends PIDCommand {
     @Override
     protected void initialize() {
         Robot.intakeSubsystem.intake_config();
-        intakeController.enable();
+//        if (currentButton == 1) {
+//            intakeController.enable();
+//            Robot.m_oi.intakeMiddle.intakeController.disable();
+//            Robot.m_oi.intakeUp.intakeController.disable();
+//        } else if (currentButton == 2) {
+//            intakeController.enable();
+//            Robot.m_oi.intakeDown.intakeController.disable();
+//            Robot.m_oi.intakeUp.intakeController.disable();
+//        } else if (currentButton == 3) {
+//            intakeController.enable();
+//            Robot.m_oi.intakeMiddle.intakeController.disable();
+//            Robot.m_oi.intakeDown.intakeController.disable();
+//        }
     }
 
     @Override
     protected void execute() {
-        intakeController.setPID(Robot.intakePID.kP, Robot.intakePID.kI, Robot.intakePID.kD);
         SmartDashboard.putBoolean("IntakePIDTarget", intakeController.onTarget());
     }
 
@@ -46,6 +59,9 @@ public class IntakeSpinPID extends PIDCommand {
     @Override
     protected void end() {
         intakeController.disable();
+//        Robot.m_oi.intakeMiddle.intakeController.disable();
+//        Robot.m_oi.intakeDown.intakeController.disable();
+//        Robot.m_oi.intakeUp.intakeController.disable();
         intakeController.reset();
         Robot.intakeSubsystem.setIntakeSpeed(0);
     }
@@ -57,12 +73,11 @@ public class IntakeSpinPID extends PIDCommand {
 
     @Override
     protected double returnPIDInput() {
-        return Robot.intakeSubsystem.getPosition() / 1000;
+        return Robot.intakeSubsystem.getPosition();
     }
 
     @Override
     protected void usePIDOutput(double v) {
-
         SmartDashboard.putNumber("IntakePIDOutput", v);
         Robot.intakeSubsystem.setIntakeSpeed(v);
     }

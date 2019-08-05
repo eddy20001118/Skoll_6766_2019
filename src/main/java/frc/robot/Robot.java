@@ -4,9 +4,9 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.BackGroundCommand;
 import frc.robot.commands.MainCommandGroup;
+import frc.robot.commands.TestCommand;
 import frc.robot.constants.PIDConstants;
 import frc.robot.constants.PhysicsConstants;
 import frc.robot.constants.PortConstants;
@@ -22,14 +22,14 @@ public class Robot extends TimedRobot {
     //    Command instances
     public BackGroundCommand backGroundCommand = new BackGroundCommand();
     public MainCommandGroup mainCommandGroup = new MainCommandGroup();
-    public frc.robot.commands.intakeCommands.IntakeSpinPID intakeSpinPID = new frc.robot.commands.intakeCommands.IntakeSpinPID(200);
+//    public TestCommand testCommand = new TestCommand();
 
     //    Constants objects
     public static TimeConstants timeConstants = new TimeConstants();
     public static PhysicsConstants physicsConstants = new PhysicsConstants();
     public static PortConstants portConstants = new PortConstants();
-    public static PIDConstants elevatorPID = new PIDConstants("Elevator", 0.5, 0, 0);
-    public static PIDConstants intakePID = new PIDConstants("Intake", 100, 0, 0);
+    public static PIDConstants elevatorPID = new PIDConstants("Elevator", 0.05, 0, 0);
+    public static PIDConstants intakePID = new PIDConstants("Intake", 0.005, 0, 0);
 
     //    Subsystem instances
     public static ElevatorSubsystem elevatorSubsytem = new ElevatorSubsystem();
@@ -59,6 +59,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         mainCommandGroup.start();
+//        testCommand.start();
     }
 
     @Override
@@ -78,6 +79,9 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledInit() {
+        mainCommandGroup.cancel();
+//        testCommand.cancel();
+
         Robot.drivetrainSubsystem.arcadeDrive(0, 0);
         Robot.elevatorSubsytem.setSpeed(0);
         Robot.intakeSubsystem.setIntakeSpeed(0);
@@ -90,6 +94,11 @@ public class Robot extends TimedRobot {
     }
 
     @Override
+    public void testInit() {
+    }
+
+    @Override
     public void testPeriodic() {
+        Scheduler.getInstance().run();
     }
 }
