@@ -4,19 +4,23 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class PortConstants implements Constants {
 //    CAN port
-    public int pElevatorMain = 1;
-    public int pElevatorSlave = 2;
-    public int pDtLeftMain = 3;
-    public int pDtLeftSlave = 4;
-    public int pDtRightMain = 5;
-    public int pDtRightSlave = 6;
-    public int pIntakeSpin = 7;
-    public int pIntakeUp = 8;
-    public int pIntakeDown = 9;
+    public int pElevatorMain = 11;
+    public int pElevatorSlave = 12;
+    public int pDtLeftMain = 19;
+    public int pDtLeftSlave = 17;
+    public int pDtRightMain = 16;
+    public int pDtRightSlave = 15;
+    public int pIntakeSpin = 13;
+    public int pIntakeUp = 14;
+    public int pIntakeDown = 18;
 
 //    DigitalInput port
     public int pIFRLeft = 0;
     public int pIFRRight = 1;
+
+//    Solenoid Node ID
+    public int pHatchPanel0 = 0;
+    public int pHatchPanel1 = 1;
 
     @Override
     public void refresh() {
@@ -34,6 +38,9 @@ public class PortConstants implements Constants {
 //        DigitalInput port
         this.pIFRLeft = (int) SmartDashboard.getNumber("/Port/pIFRLeft", this.pIFRLeft);
         this.pIFRRight = (int) SmartDashboard.getNumber("/Port/pIFRRight", this.pIFRRight);
+
+//        Solenoid Node ID
+        this.pHatchPanel0 = (int) SmartDashboard.getNumber("/Port/pHatchPanel", this.pHatchPanel0);
     }
 
     @Override
@@ -52,6 +59,9 @@ public class PortConstants implements Constants {
 //        DigitalInput Port
         SmartDashboard.putNumber("/Port/pIFRLeft", pIFRLeft);
         SmartDashboard.putNumber("/Port/pIFRRight", pIFRRight);
+
+//      Solenoid Node ID
+        SmartDashboard.putNumber("/Port/pHatchPanel", pHatchPanel0);
     }
 
     @Override

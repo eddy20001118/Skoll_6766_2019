@@ -6,25 +6,27 @@ public class PhysicsConstants implements Constants {
     public int elevatorAccel = 1448;
     public int elevatorCruiseV = 800;
     public int elevatorSCurveStrength = 3;
-    public double elevatorLevelOneR = 3;
+    public double elevatorLevelOneR = -33073;
     public double elevatorLevelTwoR = 7;
     public double elevatorLevelThreeR = 10;
-    public double elevatorRampRate = 0.8;
-    public int elevatorForwardSensorLimit = 10;
-    public int elevatorReverseSensorLimit = -10;
+    public double elevatorRampRate = 0.2;
+    public int elevatorForwardSensorLimit = 0;
+    public int elevatorReverseSensorLimit = -77617;
     public boolean elevatorForwardSoftLimit = false;
     public boolean elevatorReverseSoftLimit = false;
 
     public int intakeCruiseV = 560;
     public int intakeSCurveStrength = 3;
-    public int intakeForwardSensorLimit = 10;
-    public int intakeReverseSensorLimit = -10;
-    public int intakeAllowableCloseLoopError = 10;
+    public int intakeForwardSensorLimit = -332439;
+    public int intakeReverseSensorLimit = 0;
+    public int intakeAllowableCloseLoopError = 1000;
     public double intakeRampRate = 0.3;
     public boolean intakeForwardSoftLimit = false;
     public boolean intakeReverseSoftLimit = false;
 
     public boolean macinInvert = false;
+
+    public double dtRampRate = 0.35;
 
     @Override
     public void refresh() {
@@ -50,6 +52,8 @@ public class PhysicsConstants implements Constants {
         this.intakeReverseSoftLimit = (boolean) SmartDashboard.getBoolean("/Physics/intakeReverseSoftLimit", intakeReverseSoftLimit);
 
         this.macinInvert = (boolean) SmartDashboard.getBoolean("/Physics/macinInvert", macinInvert);
+
+        this.dtRampRate = (double) SmartDashboard.getNumber("/Physics/dtRampRate", dtRampRate);
     }
 
 
@@ -75,6 +79,8 @@ public class PhysicsConstants implements Constants {
         SmartDashboard.putBoolean("/Physics/intakeReverseSoftLimit", intakeReverseSoftLimit);
 
         SmartDashboard.putBoolean("/Physics/macinInvert", macinInvert);
+
+        SmartDashboard.putNumber("/Physics/dtRampRate", dtRampRate);
 
     }
 

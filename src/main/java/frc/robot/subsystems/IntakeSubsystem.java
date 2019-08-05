@@ -7,74 +7,89 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.Robot;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 
-/**
- * An example subsystem.  You can replace me with your own Subsystem.
- */
+
 public class IntakeSubsystem extends Subsystem {
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
-    private WPI_VictorSPX intakeMacin; //victor1 openloop Mac
-    private WPI_VictorSPX intakeAttrition;// victor2 openloop attrition
-    private WPI_TalonSRX intakeMotor;// talon1 closeloop
+
+    private WPI_TalonSRX intakeMacin;
+    private WPI_VictorSPX intakeAttrition;
+    private WPI_TalonSRX intakeMotor;
+    private Compressor compressor = new Compressor();
+    private Solenoid hatchSolenoid0 = new Solenoid(0);
+    private Solenoid hatchSolenoid1 = new Solenoid(1);
 
     public IntakeSubsystem() {
         intake_config();
     }
 
     public void intake_config() {
-        intakeAttrition = new WPI_VictorSPX(Robot.portConstants.pIntakeSpin); //attrition pip control
-        intakeMacin = new WPI_VictorSPX(Robot.portConstants.pIntakeUp);//intake_macin control up
-        intakeMotor = new WPI_TalonSRX(Robot.portConstants.pIntakeDown);//intakeMotor contorl down
+        compressor.stop();
+        intakeAttrition = new WPI_VictorSPX(Robot.portConstants.pIntakeDown);
+        intakeMacin = new WPI_TalonSRX(Robot.portConstants.pIntakeUp);
+        intakeMotor = new WPI_TalonSRX(Robot.portConstants.pIntakeSpin);
 
 //      Main talon controller programmed with mag encoder
         intakeMotor.configFactoryDefault();
-        intakeMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, Robot.timeConstants.kTimeOutMs);
-        intakeMotor.setSensorPhase(true);
+        intakeMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, Robot.timeConstants.kTimeOutMs);
+        intakeMotor.setSensorPhase(false);
         intakeMotor.setNeutralMode(NeutralMode.Brake);
-
-//      position loop set
-        intakeMotor.configForwardSoftLimitEnable(Robot.physicsConstants.intakeForwardSoftLimit);
-        intakeMotor.configForwardSoftLimitThreshold(Robot.physicsConstants.intakeForwardSensorLimit, Robot.timeConstants.kTimeOutMs);
-        intakeMotor.configReverseSoftLimitEnable(true);
-        intakeMotor.configReverseSoftLimitThreshold(Robot.physicsConstants.intakeReverseSensorLimit, Robot.timeConstants.kTimeOutMs);
-// 1
-        intakeMotor.configAllowableClosedloopError(Robot.portConstants.pIntakeSpin, Robot.physicsConstants.intakeAllowableCloseLoopError, Robot.timeConstants.kTimeOutMs);
-        intakeMotor.configMotionCruiseVelocity(Robot.physicsConstants.intakeCruiseV, Robot.timeConstants.kTimeOutMs);
-        intakeMotor.configMotionSCurveStrength(Robot.physicsConstants.intakeSCurveStrength, Robot.timeConstants.kTimeOutMs);
+//        intakeMotor.configNeutralDeadband(0.02);
 
 //      Config ramp rate
         intakeMotor.configClosedloopRamp(Robot.physicsConstants.intakeRampRate, Robot.timeConstants.kTimeOutMs);
         intakeMotor.configOpenloopRamp(Robot.physicsConstants.intakeRampRate, Robot.timeConstants.kTimeOutMs);
 
-//      Config PID value
-        intakeMotor.config_kP(0, Robot.intakePID.kP, Robot.timeConstants.kTimeOutMs);
-        intakeMotor.config_kI(0, Robot.intakePID.kI, Robot.timeConstants.kTimeOutMs);
-        intakeMotor.config_kD(0, Robot.intakePID.kD, Robot.timeConstants.kTimeOutMs);
-
+        intakeMotor.setInverted(true);
 //      Open-loop motors
         intakeMacin.configFactoryDefault();
         intakeAttrition.configFactoryDefault();
-        intakeMacin.setInverted(Robot.physicsConstants.macinInvert);
-        intakeAttrition.setInverted(!Robot.physicsConstants.macinInvert);
+        intakeMacin.configOpenloopRamp(Robot.physicsConstants.intakeRampRate, Robot.timeConstants.kTimeOutMs);
+        intakeAttrition.configOpenloopRamp(Robot.physicsConstants.intakeRampRate, Robot.timeConstants.kTimeOutMs);
 
-        // Test
+        intakeAttrition.setInverted(true);
     }
 
-    public void setRotation(double targetRotation) {
-        intakeMotor.set(ControlMode.MotionMagic, targetRotation * 4096);
+    public void setIntakePosition(double targetPosition) {
+        intakeMotor.set(ControlMode.MotionMagic, targetPosition);
     }
 
-    public void setSpeed(double targetSpeed) {
+    public void setIntakeSpeed(double targetSpeed) {
+        SmartDashboard.putNumber("IntakeSpin", targetSpeed);
         intakeMotor.set(ControlMode.PercentOutput, targetSpeed);
+    }
+
+    public void setIntakeUDSpeed(double targetSpeedUp, double targetSpeedDown) {
+        if (targetSpeedUp < 0 && targetSpeedDown < 0){
+            SmartDashboard.putBoolean("Ball", true);
+        } else {
+            SmartDashboard.putBoolean("Ball", false);
+        }
+        intakeMacin.set(ControlMode.PercentOutput, targetSpeedUp);
+        intakeAttrition.set(ControlMode.PercentOutput, targetSpeedDown);
+    }
+
+    public void setHatchSolenoid0(boolean forward) {
+        SmartDashboard.putBoolean("HatchPanel", forward);
+        hatchSolenoid0.set(forward);
+        hatchSolenoid1.set(!forward);
+    }
+
+    public void chongqi(){
+        compressor.start();
+    }
+
+    public void stopchongqi(){
+        compressor.stop();
     }
 
     public void resetEncoder() {
@@ -82,17 +97,19 @@ public class IntakeSubsystem extends Subsystem {
     }
 
     public double getSpeed() {
-        return intakeMotor.getSelectedSensorVelocity();
+        double velocity = intakeMotor.getSelectedSensorVelocity();
+        SmartDashboard.putNumber("Sensor/intakeSpeed", velocity);
+        return velocity;
     }
 
     public double getPosition() {
-        return intakeMotor.getSelectedSensorPosition();
+        double position = intakeMotor.getSelectedSensorPosition() / 1000.0;
+        SmartDashboard.putNumber("Sensor/intakePostion", position);
+        return position;
     }
 
 
     @Override
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        // setDefaultCommand(new MySpecialCommand());
     }
 }
